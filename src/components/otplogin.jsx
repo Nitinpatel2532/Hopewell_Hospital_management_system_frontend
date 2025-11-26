@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../config';
 
 function OtpLogin() {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [step, setStep] = useState('send');
-    const [message, setMessage] = useState('');
-    
-    const navigate = useNavigate()
+  const [message, setMessage] = useState('');
 
-  // set page tab title
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.title = "Patient Email OTP Verification";
   }, []);
 
   const handleSendOtp = async () => {
     try {
-      const res = await axios.post('http://127.0.0.1:8000/send-otp/', { email });
+      const res = await axios.post(`${BASE_URL}/send-otp/`, { email });
       setStep('verify');
       setMessage(res.data.message);
     } catch (err) {
@@ -27,9 +27,9 @@ function OtpLogin() {
 
   const handleVerifyOtp = async () => {
     try {
-      const res = await axios.post('http://127.0.0.1:8000/verify-otp/', { email, otp });
-        setMessage(res.data.message);
-        navigate('/patientdashboard')
+      const res = await axios.post(`${BASE_URL}/verify-otp/`, { email, otp });
+      setMessage(res.data.message);
+      navigate('/patientdashboard');
     } catch (err) {
       setMessage(err.response?.data?.error || 'Failed to verify OTP');
     }

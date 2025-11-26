@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'
+import API from '../axios';  // ✅ Use custom axios instance
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
 
-function Patient_appointment(params) {
+function Patient_appointment() {
+
   const [date, setDate] = useState('');
   const [bloodGroup, setBloodGroup] = useState('');
   const [department, setDepartment] = useState('');
@@ -27,42 +28,39 @@ function Patient_appointment(params) {
   }
 
   const handleAppointment = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const appointmentData = {
-    patient: patientId,
-    name,
-    email,
-    mobile,
-    date,
-     blood_group: bloodGroup,
-    department,
-    address,
+    const appointmentData = {
+      patient: patientId,
+      name,
+      email,
+      mobile,
+      date,
+      blood_group: bloodGroup,
+      department,
+      address,
+    };
+
+    console.log('Appointment Booked:', appointmentData);
+
+    try {
+      const response = await API.post("/patientappointment/", appointmentData);  // ✅ FIXED
+
+      console.log('Response:', response.data);
+      alert("Appointment added successfully!");
+      setSuccess(true);
+
+    } catch (error) {
+      console.error('Error while booking appointment:', error);
+      Setmessage("Something went wrong while booking!");
+    }
+
+    // Clear form
+    setDate('');
+    setBloodGroup('');
+    setDepartment('');
+    setAddress('');
   };
-
-  console.log('Appointment Booked:', appointmentData);
-
-  try {
-    const response = await axios.post('http://127.0.0.1:8000/patientappointment/', appointmentData, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    console.log('Response:', response.data);
-    alert("Appointment added successfully!");
-    setSuccess(true);
-  } catch (error) {
-    console.error('Error while booking appointment:', error);
-    Setmessage("Something went wrong while booking!");
-  }
-
-  // Clear form
-  setDate('');
-  setBloodGroup('');
-  setDepartment('');
-  setAddress('');
-};
 
 
   return (
@@ -88,6 +86,7 @@ function Patient_appointment(params) {
               <h5 className="mb-0">Appointment Form</h5>
             </Card.Header>
             <Card.Body>
+
               {success && (
                 <Alert variant="success" onClose={() => setSuccess(false)} dismissible>
                   Appointment booked successfully!
@@ -95,6 +94,7 @@ function Patient_appointment(params) {
               )}
 
               <Form onSubmit={handleAppointment}>
+
                 <Form.Group className="mb-3">
                   <Form.Label>Select Date</Form.Label>
                   <Form.Control type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
@@ -144,9 +144,12 @@ function Patient_appointment(params) {
                     📑 Book Appointment
                   </Button>
                 </div>
+
               </Form>
+
             </Card.Body>
           </Card>
+
         </Col>
       </Row>
     </Container>
