@@ -87,7 +87,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const api_urls = "http://127.0.0.1:8000/patientlogin/"
+const api_urls = "https://hopewell-hospital-management-system.onrender.com/patientlogin/";
+
 
 const PatientLogin = () => {
   const [email, setEmail] = useState();

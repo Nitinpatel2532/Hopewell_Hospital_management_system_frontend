@@ -8,7 +8,8 @@ import "../App.css"
 import axios from 'axios';
 
 
-const api_url = 'http://127.0.0.1:8000/addpatient/'
+const api_url = 'https://hopewell-hospital-management-system.onrender.com/addpatient/';
+
 console.log(api_url)
 
 function Patient_signup() {

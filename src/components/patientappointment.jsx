@@ -201,7 +201,7 @@ function Patient_appointment(params) {
 
     try {
       const response = await axios.post(
-        'http://127.0.0.1:8000/patientappointment/',
+        'https://hopewell-hospital-management-system.onrender.com/',
         appointmentData,
         {
           headers: {
