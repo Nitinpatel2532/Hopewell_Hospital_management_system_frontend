@@ -33,14 +33,21 @@ function Patient_signup() {
 
 
     function handleaddpatient(e) {
-        e.preventDefault()
-        axios.post(api_url, form)
-            .then(res => navigate('/patientlogin'))
-            
-            
-        .catch(err=>alert("Data is not posted"))
-        
-    }
+    e.preventDefault();
+
+    axios.post(api_url, form, {
+        headers: { "Content-Type": "application/json" }
+    })
+    .then(res => {
+        console.log("Patient added:", res.data);
+        navigate('/patientlogin');
+    })
+    .catch(err => {
+        console.error("Error posting data:", err.response?.data || err.message);
+        alert("Data is not posted. Check console for details.");
+    });
+}
+
   return (
       <>
           <div className="heading-container">
